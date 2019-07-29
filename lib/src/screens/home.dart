@@ -26,7 +26,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   onTap() {
-    catController.forward();
+    if (catController.isDismissed) {
+      catController.forward();
+    } else if (catController.isCompleted) {
+      catController.reverse();
+    }
   }
 
   @override
@@ -36,7 +40,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         title: Text('Animation !'),
       ),
       body: GestureDetector(
-        child: buildAnimation(),
+        child: Center(
+          child: Stack(
+            children: <Widget>[
+              buildAnimation(),
+              buildBox(),
+            ],
+          ),
+        ),
         onTap: onTap,
       ),
     );
@@ -52,6 +63,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           margin: EdgeInsets.only(top: catAnimation.value),
         );
       },
+    );
+  }
+
+  Widget buildBox() {
+    return Container(
+      width: 200.0,
+      height: 200.0,
+      color: Colors.grey,
     );
   }
 }
